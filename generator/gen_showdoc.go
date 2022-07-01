@@ -2,24 +2,40 @@ package generator
 
 import (
 	"fmt"
+	"os"
 	"strings"
+	"sync"
 
 	"github.com/MasterJoyHunan/genshowdoc/prepare"
+
+	"github.com/panjf2000/ants/v2"
 	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
 )
 
 const memo = "更多返回错误代码请看首页的错误代码描述"
 
 func GenShowDoc() error {
+	var wg sync.WaitGroup
+	pool, err := ants.NewPool(100)
+	defer pool.Release()
+	if err != nil {
+		return err
+	}
 	for _, g := range prepare.ApiInfo.Service.Groups {
 		for _, r := range g.Routes {
-			api, err := MakeApiDoc(r, g)
-			if err != nil {
-				return err
-			}
-			CallApi(api)
+			_ = pool.Submit(func() {
+				wg.Add(1)
+				defer wg.Done()
+				api, err := MakeApiDoc(r, g)
+				if err != nil {
+					fmt.Println(err.Error())
+					os.Exit(1)
+				}
+				CallApi(api)
+			})
 		}
 	}
+	wg.Wait()
 	return nil
 }
 

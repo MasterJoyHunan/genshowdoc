@@ -10,7 +10,7 @@ go get -u github.com/MasterJoyHunan/genshowdoc
 ```
 go 1.16 及以上使用
 ```sh
-go install github.com/MasterJoyHunan/genshowdoc@v1.0.0
+go install github.com/MasterJoyHunan/genshowdoc@v1.0.1
 ```
 
 #### 在项目下定义 you-app.api 文件

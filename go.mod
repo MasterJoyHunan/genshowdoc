@@ -3,6 +3,7 @@ module github.com/MasterJoyHunan/genshowdoc
 go 1.18
 
 require (
+	github.com/panjf2000/ants/v2 v2.5.0
 	github.com/spf13/cobra v1.5.0
 	github.com/zeromicro/go-zero/tools/goctl v1.3.8
 )
